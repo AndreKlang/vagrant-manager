@@ -1,0 +1,19 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src"
+    ],
+    "files": [
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": ["Tests","tests","kherge"],
+            "in": "vendor"
+        }
+    ],
+    "git-version": "package_version",
+    "main": "bin/skeleton.php",
+    "output": "skeleton.phar",
+    "stub": true
+}
