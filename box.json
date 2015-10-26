@@ -13,7 +13,7 @@
         }
     ],
     "git-version": "package_version",
-    "main": "bin/skeleton.php",
-    "output": "skeleton.phar",
+    "main": "bin/vagma.php",
+    "output": "vagma.phar",
     "stub": true
 }
