@@ -1,3 +1,6 @@
 #!/bin/bash
+if [ ! -f ./box.phar ]; then
+    curl -LSs http://box-project.github.io/box2/installer.php | php
+fi
 
-./vendor/kherge/box/bin/box build
+./box.phar build

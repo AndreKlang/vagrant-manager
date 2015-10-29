@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Command;
+use App\Service\Vagrant;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -19,5 +20,8 @@ class HelloCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output){
         $output->writeln('Hello World');
+
+        $vagrant = new Vagrant();
+        $output->writeln($vagrant->getAllHosts());
     }
 }
