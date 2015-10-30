@@ -9,10 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class HaltCommand extends Command
+class SuspendCommand extends Command
 {
-    private $type = "halt";
-    private $action = "stop";
+    private $type = "suspend";
+    private $action = "suspend";
 
     protected function configure(){
         $this

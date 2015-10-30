@@ -11,14 +11,17 @@ use Symfony\Component\Console\Input\InputOption;
 
 class UpCommand extends Command
 {
+    private $type = "up";
+    private $action = "start";
+
     protected function configure(){
         $this
-            ->setName('up')
-            ->setDescription('Bring up box')
+            ->setName($this->type)
+            ->setDescription(ucfirst($this->action).' box')
             ->addArgument(
                 'identifyer',
                 InputArgument::OPTIONAL,
-                'Select which box to start (hash or number)'
+                'Select which box to '.$this->action.' (number, hash or "matching rules")'
             )
             ->addOption(
                 'browse',
@@ -30,21 +33,10 @@ class UpCommand extends Command
     }
 
     protected function interact(InputInterface $input, OutputInterface $output){
-        $this->browseInteraction($input, $output, "Select box to start");
+        $this->browseInteraction($input, $output, "Select box to ".$this->action);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output){
-
-        $vagrant = new Vagrant();
-
-        $host = $vagrant->lookupBox($input->getArgument("identifyer"));
-        if($host !== null){
-            $id = $host->getData("id");
-            $output->writeln(sprintf("<fg=yellow>Bringing up:</> %s <fg=blue>%s</>",$host->getData("name"),$host->getData("dir")));
-        } else {
-            $id = null;
-        }
-
-        $result = $vagrant->commandUp($id);
+        $this->vagrantProcessCommand($input, $output, $this->type);
     }
 }

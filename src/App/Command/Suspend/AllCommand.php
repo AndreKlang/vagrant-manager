@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command\Halt;
+namespace App\Command\Suspend;
 
 use App\Command;
 use App\Service\Vagrant;
@@ -10,8 +10,8 @@ use Symfony\Component\Console\Input\ArrayInput;
 
 class AllCommand extends Command
 {
-    private $type = "halt";
-    private $action = "stop";
+    private $type = "suspend";
+    private $action = "suspend";
 
     protected function configure(){
         $this

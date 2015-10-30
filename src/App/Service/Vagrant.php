@@ -73,6 +73,30 @@ class Vagrant extends Service {
         return $result;
     }
 
+    /**
+     * @param null $host
+     * @return null|boolean
+     */
+    public function commandDestroy($host = null){
+        $shell = new Shell();
+        if($host === null) $result = $shell->start("vagrant destroy");
+        else $result = $shell->start("vagrant destroy ".$host);
+
+        return $result;
+    }
+
+    /**
+     * @param null $host
+     * @return null|boolean
+     */
+    public function commandSuspend($host = null){
+        $shell = new Shell();
+        if($host === null) $result = $shell->start("vagrant suspend");
+        else $result = $shell->start("vagrant suspend ".$host);
+
+        return $result;
+    }
+
     public function lookupBox($id){
 
         $return = null;
@@ -100,6 +124,62 @@ class Vagrant extends Service {
         }
 
         return $return;
+    }
+
+    public function resolveStr($str){
+
+        $allHosts = $this->getAllHosts();
+
+        # if the string is a "hash"
+        if(preg_match('/^[a-z0-9]{7}$/',$str)){
+            foreach($allHosts as $key => $host){
+                if($host->getData("id") == $str) return [$key+1];
+            }
+            throw new \InvalidArgumentException("Box with that ID is not found");
+        }
+
+        $matches = [];
+
+        $numbers = range(1,count($allHosts)); // all possible numbers
+
+        $parts = explode(",",$str);
+        foreach($parts as $part){
+            $part = str_replace(" ","",$part);
+
+            # go throgh the rules
+            if($part == "*"){
+                # if * (match all)
+                $matches = $numbers;
+            }
+            elseif(substr($part,0,1)=="-"){
+                # if it starts with a - (exclude that one)
+                $key = array_search(substr($part,1),$matches);
+                if(isset($matches[$key])) unset($matches[$key]);
+            }
+            elseif(substr($part,-1,1)=="-"){
+                # if it ends with a - (take that one, and all after)
+                foreach(range(substr($part,0,-1),count($allHosts)) as $match){
+                    if(!in_array($match,$matches)) $matches[] = $match;
+                }
+            }
+            elseif(preg_match("/([0-9]+)-([0-9]+)/",$part,$partNumbers)){
+                # if it is a range 1-4 (include them and all in between)
+                foreach(range($partNumbers[1],$partNumbers[2]) as $match){
+                    if(!in_array($match,$matches)) $matches[] = $match;
+                }
+            }
+            elseif(preg_match("/([0-9]+)/",$part,$partNumbers)){
+                if(!in_array($partNumbers[1],$matches)) $matches[] = $partNumbers[1];
+            }
+
+        }
+
+        # sanitize the result
+        foreach($matches as $key => $match){
+            if(!in_array($match,$numbers)) unset($matches[$key]);
+        }
+
+        return $matches;
     }
 
 }

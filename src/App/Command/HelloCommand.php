@@ -22,6 +22,10 @@ class HelloCommand extends Command
         $output->writeln('Hello World');
 
         $vagrant = new Vagrant();
-        $output->writeln($vagrant->getAllHosts());
+        //$output->writeln($vagrant->getAllHosts());
+
+        print_r($vagrant->resolveStr("2- , -5 , 1 - 4"));
+        print_r($vagrant->resolveStr("1 , 2 , 3 , 5 - "));
+        print_r($vagrant->resolveStr("10"));
     }
 }
