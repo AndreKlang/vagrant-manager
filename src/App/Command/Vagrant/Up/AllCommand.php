@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Command\Restart;
+namespace App\Command\Vagrant\Up;
 
 use App\Command;
 use App\Service\Vagrant;
+use App\Command\Vagrant\UpCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class AllCommand extends Command
+class AllCommand extends UpCommand
 {
-    private $type = "restart";
-    private $action = "restart";
-
     protected function configure(){
         $this
             ->setName($this->type.':all')
@@ -23,10 +21,10 @@ class AllCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output){
 
         $command = $this->getApplication()->find($this->type);
-        $greetInput = new ArrayInput(array(
+        $argInput = new ArrayInput(array(
             "identifyer" => "*"
         ));
-        $command->run($greetInput, $output);
+        $command->run($argInput, $output);
 
     }
 }
