@@ -29,6 +29,7 @@ git tag ${TAG}
 #
 git checkout gh-pages
 
+mkdir -p downloads
 cp vagma downloads/vagma-${TAG}
 git add downloads/vagma-${TAG}
 
