@@ -22,6 +22,8 @@ $application->add(new Command\Vagrant\Restart\AllCommand());
 $application->add(new Command\Vagrant\HaltCommand());
 $application->add(new Command\Vagrant\Halt\AllCommand());
 
+$application->add(new Command\SelfupdateCommand());
+
 # good for tests
 # $application->add(new Command\HelloCommand());
 

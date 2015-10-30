@@ -17,7 +17,7 @@ cp -r .git temp-repo/
 #
 git tag ${TAG}
 ./build.sh
-cp vagma temp-repo/
+cp vagma temp-repo/vagma.phar
 
 #
 # Copy executable file into GH pages
@@ -26,15 +26,15 @@ cd temp-repo
 git checkout gh-pages
 
 mkdir -p downloads
-cp vagma downloads/vagma-${TAG}
-git add downloads/vagma-${TAG}
+cp vagma downloads/vagma-${TAG}.phar
+git add downloads/vagma-${TAG}.phar
 
-SHA1=$(openssl sha1 vagma)
+SHA1=$(openssl sha1 vagma.phar)
 IFS=', ' read -r -a sha <<< "$SHA1"
 
-JSON='"name":"vagma"'
+JSON='"name":"vagma.phar"'
 JSON="${JSON},\"sha1\":\"${sha[1]}\""
-JSON="${JSON},\"url\":\"https://github.com/AndreKlang/vagrant-manager/downloads/vagma-${TAG}\""
+JSON="${JSON},\"url\":\"https://andreklang.github.io/vagrant-manager/downloads/vagma-${TAG}.phar\""
 JSON="${JSON},\"version\":\"${TAG}\""
 
 #
