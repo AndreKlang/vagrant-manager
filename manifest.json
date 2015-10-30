@@ -1,6 +1,6 @@
 [
     {
-        "name": "vagma",
+        "name": "vagma.phar",
         "sha1": "a5f6127d23e3ce94a214425fb15640312d9f2a53",
         "url": "https://andreklang.github.io/vagrant-manager/downloads/vagma-0.0.1",
         "version": "0.0.1"
