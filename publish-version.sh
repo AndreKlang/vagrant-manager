@@ -43,7 +43,7 @@ JSON="${JSON},version:\"${TAG}\""
 #
 # Update manifest
 #
-cat manifest.json | jsawk -a "this.push({${JSON}})" | python -mjson.tool > manifest.json.tmp
+cat manifest.json | ./jsawk -a "this.push({${JSON}})" | python -mjson.tool > manifest.json.tmp
 mv manifest.json.tmp manifest.json
 git add manifest.json
 
