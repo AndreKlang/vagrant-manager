@@ -1,4 +1,0 @@
-*.phar
-vendor/*
-composer.lock
-.idea
