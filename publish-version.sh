@@ -22,7 +22,7 @@ fi
 #
 git checkout master
 git tag ${TAG}
-box build
+./build.sh
 
 #
 # Copy executable file into GH pages
