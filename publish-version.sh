@@ -24,9 +24,10 @@ cp vagma temp-repo/vagma.phar
 #
 cd temp-repo
 git checkout gh-pages
+git pull
 
 mkdir -p downloads
-cp vagma downloads/vagma-${TAG}.phar
+cp vagma.phar downloads/vagma-${TAG}.phar
 git add downloads/vagma-${TAG}.phar
 
 SHA1=$(openssl sha1 vagma.phar)
@@ -58,4 +59,4 @@ git push origin refs/tags/${TAG}
 git pull
 
 # remove the temp-repo
-rm -fr temp-tepo
+rm -fr temp-repo
