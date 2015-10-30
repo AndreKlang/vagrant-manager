@@ -1,6 +1,9 @@
 <?php
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
 
 class App extends Application {
 
@@ -15,22 +18,21 @@ class App extends Application {
         else return $default;
     }
 
-    public function getLongVersion(){
-        return parent::getLongVersion()."
+    /**
+     * Disable some unused options
+     * @return InputDefinition
+     */
+    protected function getDefaultInputDefinition() {
+        return new InputDefinition(array(
+            new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
 
-<fg=yellow>Matching rules:</>
-Most commands (halt, restart, suspend & up) supports an argument to select boxes.
-This argument is called <info>identiyer</info> and it can take a set of rules:
-    <info>*</info>              Match all boxes
-    <info>2</info>              Match box 2
-    <info>1-5</info>            Match boxes 1 through 5
-    <info>-4</info>             Exclude box 4
-    <info>4-</info>             Match box 4 and higher
-
-Rules can also be combined, separated with a comma (,)
-    <info>*,-3</info>           Match all boxes except 3
-    <info>1,4-8,-6,12-</info>   Match boxes 1,4,5,7,8,12,13,14,,999
-
-    <info>Note:</info> When combining rules, order does matter since the rules are processed in order";
+            new InputOption('--help', '-h', InputOption::VALUE_NONE, 'Display this help message'),
+            //new InputOption('--quiet', '-q', InputOption::VALUE_NONE, 'Do not output any message'),
+            //new InputOption('--verbose', '-v|vv|vvv', InputOption::VALUE_NONE, 'Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug'),
+            new InputOption('--version', '-V', InputOption::VALUE_NONE, 'Display this application version'),
+            //new InputOption('--ansi', '', InputOption::VALUE_NONE, 'Force ANSI output'),
+            //new InputOption('--no-ansi', '', InputOption::VALUE_NONE, 'Disable ANSI output'),
+            //new InputOption('--no-interaction', '-n', InputOption::VALUE_NONE, 'Do not ask any interactive question'),
+        ));
     }
 }

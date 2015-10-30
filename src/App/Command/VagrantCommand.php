@@ -31,6 +31,24 @@ class VagrantCommand extends Command
                 InputOption::VALUE_NONE,
                 'Allows you to select one from a list'
             )
+            ->setHelp("
+<fg=yellow>Matching rules:</>
+This argument is called <info>identiyer</info> and it can take a set of rules:
+    <info>*</info>              Match all boxes
+    <info>2</info>              Match box 2
+    <info>1-5</info>            Match boxes 1 through 5
+    <info>-4</info>             Exclude box 4
+    <info>4-</info>             Match box 4 and higher
+
+Rules can also be combined, separated with a comma (,)
+    <info>*,-3</info>           Match all boxes except 3
+    <info>1,4-8,-6,12-</info>   Match boxes 1,4,5,7,8,12,13,14,,999
+
+    <info>Note:</info> When combining rules, order does matter since the rules are processed in order
+    <info>Note:</info> If you use just *, it will give you unexpecte result. Since
+          that will just match the files in the current folder and send that as the argument.
+          If you want to math all, use \"*\" instead (with quotes) or use ".$this->type.":all instead")
+
         ;
     }
 
@@ -38,28 +56,32 @@ class VagrantCommand extends Command
 
         if($input->getOption("browse")){
 
-            $vagrant = new Vagrant();
-            $allHosts = $vagrant->getAllHosts();
-
-
+            # print the status list
             $command = $this->getApplication()->find('status');
-            $statusInput = new ArrayInput(array());
+            $statusInput = new ArrayInput(array(
+                "--slim"
+            ));
             $command->run($statusInput, $output);
 
+            # ask with boxes to handle
             $helper = $this->getHelper('question');
-            $question = new Question('<fg=yellow>'."Select box to ".$this->action.' [1-'.count($allHosts).']:</> ',null);
+            $question = new Question('<fg=yellow>'."Select box/boxes to ".$this->action.':</> ',null);
+            $question->setMaxAttempts(5);
+
+            # set up validation for the question
             $question->setValidator(function ($answer) {
                 $vagrant = new Vagrant();
-                $allHosts = $vagrant->getAllHosts();
-                if (!is_numeric($answer) || $answer < 1 || $answer > count($allHosts)) {
+
+                # check if the answer can be resolved
+                if (!count($vagrant->resolveStr($answer))) {
                     throw new \RuntimeException(
-                        'Invalid option'
+                        'Your selection does not match any boxes'
                     );
                 }
                 return $answer;
             });
-            $question->setMaxAttempts(5);
 
+            # if we have an answer, set it as an argument, and move on
             if ($answer = $helper->ask($input, $output, $question)) {
                 $input->setArgument("identifyer",$answer);
             }
@@ -69,6 +91,7 @@ class VagrantCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output){
         $vagrant = new Vagrant();
 
+        // TODO: Refactor this!
         $typeConf = array(
             "up" => array(
                 "skipIfState" => "running",
@@ -126,19 +149,36 @@ class VagrantCommand extends Command
             $typeConf[$this->type]["command"](null);
         } else {
             $i = 0;
+
+            # handle all boxes that match the inputStr
             foreach($vagrant->resolveStr($inputStr) as $id){
+
+                /** @var \App\Service\Vagrant\Host $host */
                 $host = $vagrant->lookupBox($id);
 
+                # check if this box should be ignored
                 if($host->getData("state")==$typeConf[$this->type]["skipIfState"]) continue;
 
                 $i++;
-
                 $id = $host->getData("id");
-                $output->writeln(sprintf("<fg=yellow>".$typeConf[$this->type]["statement_head"].":</> %s <fg=blue>%s</>",$host->getData("name"),$host->getData("dir")));
+
+                $output->writeln(sprintf(
+                    "<fg=yellow>".$typeConf[$this->type]["statement_head"].":</> %s <fg=blue>%s</>",
+                    $host->getData("name"),
+                    $host->getData("dir")
+                ));
 
                 $typeConf[$this->type]["command"]($id);
             }
-            if($i) $output->writeln(sprintf("<fg=green>Done:</> ".$typeConf[$this->type]["statement_foot"]." <fg=blue>%s</> %s",$i,($i > 1 ? 'boxes' : "box")));
+
+            # print success-message
+            if($i){
+                $output->writeln(sprintf(
+                    "<fg=green>Done:</> ".$typeConf[$this->type]["statement_foot"]." <fg=blue>%s</> %s",
+                    $i,
+                    ($i > 1 ? 'boxes' : "box")
+                ));
+            }
         }
     }
 }

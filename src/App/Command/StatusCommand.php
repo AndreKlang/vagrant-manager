@@ -6,6 +6,8 @@ use App\Command;
 use App\Service\Vagrant;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\ArrayInput;
 
 class StatusCommand extends Command
 {
@@ -13,11 +15,29 @@ class StatusCommand extends Command
         $this
             ->setName('status')
             ->setDescription('Get current status')
+            ->addOption(
+                'slim',
+                's',
+                InputOption::VALUE_NONE,
+                'Only print the table, no extra info'
+            )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output){
         $vagrant = new Vagrant();
+
+        # if we should print extra info in top
+        if(!$input->getOption("slim")){
+            $command = $this->getApplication()->find('list');
+            $statusInput = new ArrayInput(array(
+                "--slim"
+            ));
+            $command->run($statusInput, $output);
+
+            $output->writeln("\n");
+            $output->writeln("<fg=yellow>Current status-list:</>");
+        }
 
         $rows = array();
         foreach($vagrant->getAllHosts() as $key => $box){
