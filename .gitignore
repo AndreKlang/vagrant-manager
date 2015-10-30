@@ -1,4 +1,6 @@
-*.phar
+/box.phar
+/vagma
+/jsawk
 vendor/*
 composer.lock
 .idea

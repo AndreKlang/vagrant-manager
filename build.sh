@@ -4,3 +4,5 @@ if [ ! -f ./box.phar ]; then
 fi
 
 ./box.phar build
+
+mv vagma.phar vagma
