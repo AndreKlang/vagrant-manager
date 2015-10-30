@@ -18,14 +18,5 @@ class Command extends \Symfony\Component\Console\Command\Command {
     protected function initialize(InputInterface $input, OutputInterface $output){
     }
 
-    function browseInteraction(InputInterface $input, OutputInterface $output, $text = 'Select box'){
-
-    }
-
-    function vagrantProcessCommand(InputInterface $input, OutputInterface $output, $type){
-
-
-    }
-
 
 }
