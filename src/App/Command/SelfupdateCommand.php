@@ -5,8 +5,6 @@ namespace App\Command;
 use App\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputOption;
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
