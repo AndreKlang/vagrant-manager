@@ -3,6 +3,8 @@ This is a small app that make your life a little bit easier if you are a heavy v
 
 It has one main purpose really, make it easyer to manage one, or many boxes with as few commands as possible. For instance spin up 5, 10, or even all boxes at the same time. And what about halting them? Yep, that too is really easy!
 
+![Screenshot](https://andreklang.github.io/vagrant-manager/images/screen-1.png)
+
 ## Some examples
 
 Well, lets start with the basics, you run it like this: ```vagma command [identifier]``` If you don't know the identifier, add the -b option (short for --browse) and you will get a pretty list showing you all your boxes, with the current state of it, and a number (the identifier).
@@ -38,9 +40,6 @@ vagma suspend -b
 ```
 As you can see above, pretty short, but powerful commands that match vagrants native commands very close. And that's where I'll leave you with the how-to. The rest the app will tell you, just ask it for help ```vagma help``` for general help, or ```vagma help [command]``` to get mor info about a specific command.
 
-## Print screens
-*Will come soon*
-
 ## Installation
 
 The installation is super simple, only prerequisite is that you have php installed.
@@ -74,7 +73,7 @@ I'd love to get contributions in any form!
 ## Roadmap
 
  - [X] Write a good readme
- - [ ] Add some pretty printscreens
+ - [X] Add some pretty printscreens
  - [ ] Add command for "vagrant ssh"
  - [ ] Refactor the ugly part of the commands
  
