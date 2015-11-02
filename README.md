@@ -71,6 +71,13 @@ I'd love to get contributions in any form!
  * build with build.sh
  * Make a pull-request
  
+## Roadmap
+
+ - [X] Write a good readme
+ - [ ] Add some pretty printscreens
+ - [ ] Add command for "vagrant ssh"
+ - [ ] Refactor the ugly part of the commands
+ 
 ## Disclaimer
 This project & software is free to use, offered as is, without any warranty, and without any responsibilities.
  
