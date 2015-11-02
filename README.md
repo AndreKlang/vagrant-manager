@@ -13,7 +13,7 @@ So with that little backgroun, theese should be pretty self explanitory: *(but I
 
 ```bash
 # start the current box (based on folder you're currently in)
-# (this is exactly like "vgrant up")
+# (this is exactly like "vagrant up")
 vagma up
 
 # start box number 2

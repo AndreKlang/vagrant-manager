@@ -30,10 +30,10 @@ class StatusCommand extends Command
         # if we should print extra info in top
         if(!$input->getOption("slim")){
             $command = $this->getApplication()->find('list');
-            $statusInput = new ArrayInput(array(
+            $listInput = new ArrayInput(array(
                 "--slim"
-            ));
-            $command->run($statusInput, $output);
+            ),$command->getDefinition());
+            $command->run($listInput, $output);
 
             $output->writeln("\n");
             $output->writeln("<fg=yellow>Current status-list:</>");
