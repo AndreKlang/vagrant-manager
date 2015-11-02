@@ -11,7 +11,7 @@ Well, lets start with the basics, you run it like this: ```vagma command [identi
 
 And the **identifier**, that's a cool thing, anywhere you enter an identifier, you can enter multiple of them, AS RULES! like this: "\*,-4" that matches all boxes (the "\*"), except number 4 (the "-4"). Or another example: "2-5,8,12-", matching 2,3,4,5,8,12,13,14,15,and-so-on.. Pretty cool huh?
  
-So with that little backgroun, theese should be pretty self explanitory: *(but I'll describe them anyway)*
+So with that little background, these should be pretty self explanatory: *(but I'll describe them anyway)*
 
 ```bash
 # start the current box (based on folder you're currently in)
@@ -22,7 +22,7 @@ vagma up
 vagma up 2
 
 # start all boxes, except number 4
-vagma up *,-2
+vagma up *,-4
 
 # get current status of all boxes
 vagma status
