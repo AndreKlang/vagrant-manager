@@ -54,7 +54,7 @@ Rules can also be combined, separated with a comma (,)
 
     protected function interact(InputInterface $input, OutputInterface $output){
 
-        if($input->getOption("browse")){
+        if($input->hasOption("browse") && $input->getOption("browse")){
 
             # print the status list
             $command = $this->getApplication()->find('status');
