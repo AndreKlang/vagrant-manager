@@ -131,6 +131,15 @@ Rules can also be combined, separated with a comma (,)
                 "statement_head" => "Restarting",
                 "statement_foot" => "restarted"
             ),
+            "ssh" => array(
+                "skipIfState" => null,
+                "command" => function($id){
+                    $vagrant = new Vagrant();
+                    $vagrant->commandSsh($id);
+                },
+                "statement_head" => "Starting ssh-sessiong",
+                "statement_foot" => "ssh-session ended for"
+            ),
             "destroy" => array(
                 "skipIfState" => null,
                 "command" => function($id){

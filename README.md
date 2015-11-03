@@ -1,7 +1,7 @@
 # Vagrant Manager
 This is a small app that make your life a little bit easier if you are a heavy vagrant user with lots of different boxes that you often switch between.
 
-It has one main purpose really, make it easyer to manage one, or many boxes with as few commands as possible. For instance spin up 5, 10, or even all boxes at the same time. And what about halting them? Yep, that too is really easy!
+It has one main purpose really, make it easier to manage one, or many boxes with as few commands as possible. For instance spin up 5, 10, or even all boxes at the same time. And what about halting them? Yep, that too is really easy!
 
 ![Screenshot](https://andreklang.github.io/vagrant-manager/images/screen-1.png)
 
@@ -74,8 +74,10 @@ I'd love to get contributions in any form!
 
  - [X] Write a good readme
  - [X] Add some pretty printscreens
- - [ ] Add command for "vagrant ssh"
- - [ ] Refactor the ugly part of the commands
+ - [X] Add command for "vagrant ssh"
+ - [ ] Refactor "the ugly part"
+ - [ ] Apply a real License
+ - [ ] Release version 1.0.0
  
 ## Disclaimer
 This project & software is free to use, offered as is, without any warranty, and without any responsibilities.

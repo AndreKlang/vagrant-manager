@@ -97,6 +97,18 @@ class Vagrant extends Service {
         return $result;
     }
 
+    /**
+     * @param null $host
+     * @return null|boolean
+     */
+    public function commandSsh($host = null){
+        $shell = new Shell();
+        if($host === null) $result = $shell->start("vagrant ssh");
+        else $result = $shell->start("vagrant ssh ".$host);
+
+        return $result;
+    }
+
     public function lookupBox($id){
 
         $return = null;
