@@ -16,5 +16,6 @@
     "git-version": "package_version",
     "main": "bin/vagma.php",
     "output": "vagma.phar",
-    "stub": true
+    "stub": true,
+    "compression":"GZ"
 }
