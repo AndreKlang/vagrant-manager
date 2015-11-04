@@ -23,7 +23,7 @@ class AllCommand extends RestartCommand
 
         $command = $this->getApplication()->find($this->type);
         $argInput = new ArrayInput(array(
-            "identifyer" => "*"
+            "identifier" => "*"
         ));
         $command->run($argInput, $output);
 

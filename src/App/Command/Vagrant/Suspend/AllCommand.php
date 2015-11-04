@@ -22,7 +22,7 @@ class AllCommand extends SuspendCommand
 
         $command = $this->getApplication()->find($this->type);
         $argInput = new ArrayInput(array(
-            "identifyer" => "*"
+            "identifier" => "*"
         ));
         $command->run($argInput, $output);
 

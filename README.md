@@ -75,7 +75,7 @@ I'd love to get contributions in any form!
  - [X] Write a good readme
  - [X] Add some pretty printscreens
  - [X] Add command for "vagrant ssh"
- - [ ] Refactor "the ugly part"
+ - [X] Refactor "the ugly part"
  - [ ] Apply a real License
  - [ ] Release version 1.0.0
  
