@@ -57,10 +57,7 @@ Rules can also be combined, separated with a comma (,)
 
             # print the status list
             $command = $this->getApplication()->find('status');
-            $statusInput = new ArrayInput(array(
-                "--slim" => true
-            ),$command->getDefinition());
-
+            $statusInput = new ArrayInput(array(),$command->getDefinition());
             $command->run($statusInput, $output);
 
             # ask with boxes to handle

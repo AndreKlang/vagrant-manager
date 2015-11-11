@@ -16,10 +16,16 @@ class StatusCommand extends Command
             ->setName('status')
             ->setDescription('Get current status')
             ->addOption(
-                'slim',
-                's',
+                'refresh',
+                'r',
                 InputOption::VALUE_NONE,
-                'Only print the table, no extra info'
+                'Refresh the status of your boxes'
+            )
+            ->setHelp(
+                "This will show you a pretty table of all your boxes, and their current state."."\n".
+                "\n".
+                "<bg=red>Note:</> This list is cached on your system"."\n".
+                "   If you find that the list is not correct, run the status again with the <info>--refresh</info> option"."\n"
             )
         ;
     }
@@ -27,20 +33,8 @@ class StatusCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output){
         $vagrant = new Vagrant();
 
-        # if we should print extra info in top
-        if(!$input->getOption("slim")){
-            $command = $this->getApplication()->find('list');
-            $listInput = new ArrayInput(array(
-                "--slim"
-            ),$command->getDefinition());
-            $command->run($listInput, $output);
-
-            $output->writeln("\n");
-            $output->writeln("<fg=yellow>Current status-list:</>");
-        }
-
         $rows = array();
-        foreach($vagrant->getAllHosts() as $key => $box){
+        foreach($vagrant->getAllHosts($input->getOption("refresh")) as $key => $box){
             /** @var \App\Service\Vagrant\Host $box */
 
             if($box->getData("state") == "poweroff") $status = "<fg=red>Off</>";

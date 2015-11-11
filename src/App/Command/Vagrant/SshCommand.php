@@ -45,19 +45,21 @@ class SshCommand extends VagrantCommand
             foreach($hostList as $host){
                 /** @var \App\Service\Vagrant\Host $host */;
 
-                if($host->getData("state") != 'running' && $input->getOption("start")){
+                if($host->getData("state") != 'running'){
 
-                    $output->writeln(sprintf("<fg=yellow>Starting:</> %s <fg=blue>%s</>",
-                        $host->getData("name"),$host->getData("dir")
-                    ));
-                    $vagrant->commandUp($host->getData("id"));
-
-                } else {
-                    $count--;
-                    $output->writeln(sprintf("<bg=red>Box %s (%s) is not running!</>",
-                        $host->getData("name"),$host->getData("dir")
-                    ));
-                    $output->writeln(sprintf("<fg=yellow>Use option --start to start it for you</>"));
+                    if($input->getOption("start")) {
+                        $output->writeln(sprintf("<fg=yellow>Starting:</> %s <fg=blue>%s</>",
+                            $host->getData("name"),$host->getData("dir")
+                        ));
+                        $vagrant->commandUp($host->getData("id"));
+                    } else {
+                        $count--;
+                        $output->writeln(sprintf("<bg=red>Box %s (%s) is not running!</>",
+                            $host->getData("name"),$host->getData("dir")
+                        ));
+                        $output->writeln(sprintf("<fg=yellow>Use option --start to start it for you</>"));
+                        continue;
+                    }
                 }
 
                 $output->writeln(sprintf("<fg=yellow>Starting ssh-session to:</> %s <fg=blue>%s</>",

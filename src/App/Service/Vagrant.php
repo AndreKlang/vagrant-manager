@@ -7,13 +7,20 @@ use App\Service\Vagrant\Host;
 
 class Vagrant extends Service {
 
-    public function getAllHosts($useCache = true) {
+    /**
+     * @param bool|false $refresh Refreshes the statuslist before fetching it
+     * @return array|null
+     */
+    public function getAllHosts($refresh = false) {
 
         # check if we have a previous result (and if we want to use it)
-        if($useCache && ($current = self::fetch("all_hosts")) !== null) return $current;
+        if(($current = self::fetch("all_hosts")) !== null) return $current;
 
         $shell = new Shell();
-        $status = $shell->cmd("vagrant global-status");
+
+        # Get the status-list
+        if($refresh) $status = $shell->cmd("vagrant global-status --prune 2>&1");
+        else $status = $shell->cmd("vagrant global-status");
 
         $hosts = array();
         foreach($status->output as $row){

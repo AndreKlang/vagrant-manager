@@ -76,7 +76,7 @@ I'd love to get contributions in any form!
  - [X] Add some pretty printscreens
  - [X] Add command for "vagrant ssh"
  - [X] Refactor "the ugly part"
- - [ ] Apply a real License
+ - [X] Apply a real License
  - [ ] Release version 1.0.0
  
 ## Disclaimer

@@ -26,7 +26,7 @@ $application->add(new Command\Vagrant\SshCommand());
 
 $application->add(new Command\SelfupdateCommand());
 
-# good for tests
-# $application->add(new Command\HelloCommand());
+$application->add(new Command\HelpCommand());
+$application->add(new Command\AboutCommand());
 
 $application->run();
