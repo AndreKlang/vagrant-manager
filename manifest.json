@@ -52,5 +52,11 @@
         "sha1": "0f8d4a4823aa0b3bf7f42ac1b9ef251524a32325",
         "url": "https://andreklang.github.io/vagrant-manager/downloads/vagma-0.0.9.phar",
         "version": "0.0.9"
+    },
+    {
+        "name": "vagma.phar",
+        "sha1": "099fb2789dc15f5b814cd7864e3b4e48129bb8fa",
+        "url": "https://andreklang.github.io/vagrant-manager/downloads/vagma-0.0.10.phar",
+        "version": "0.0.10"
     }
 ]
