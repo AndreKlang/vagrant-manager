@@ -37,11 +37,23 @@ class StatusCommand extends Command
         foreach($vagrant->getAllHosts($input->getOption("refresh")) as $key => $box){
             /** @var \App\Service\Vagrant\Host $box */
 
-            if($box->getData("state") == "poweroff") $status = "<fg=red>Off</>";
-            elseif($box->getData("state") == "saved") $status = "<fg=blue>Suspended</>";
-            elseif($box->getData("state") == "running")  $status = "<fg=green>On</>";
-            elseif($box->getData("state") == "aborted")  $status = "<fg=red>Aborted</>";
-            else  $status = "<bg=red> Unknown </>";
+            switch ($box->getData("state")){
+                case "poweroff":
+                    $status = "<fg=red>Off</>";
+                    break;
+                case "saved":
+                    $status = "<fg=blue>Suspended</>";
+                    break;
+                case "running":
+                    $status = "<fg=green>On</>";
+                    break;
+                case "aborted":
+                    $status = "<fg=red>Aborted</>";
+                    break;
+                default:
+                    $status = "<bg=red> Unknown </>";
+                    break;
+            }
 
             $rows[] = array(
                 $key + 1,

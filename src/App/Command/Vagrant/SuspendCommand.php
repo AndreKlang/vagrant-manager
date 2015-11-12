@@ -20,7 +20,8 @@ class SuspendCommand extends VagrantCommand
 
         $ignoreStatuses = array(
             "saved",
-            "poweroff"
+            "poweroff",
+            "aborted"
         );
 
         $list = parent::getHostList($input, $output);
