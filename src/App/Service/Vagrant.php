@@ -56,6 +56,10 @@ class Vagrant extends Service {
         return $hosts;
     }
 
+    public function flushCache(){
+        self::store("all_hosts",null);
+    }
+
     /**
      * @param null $host
      * @return null|boolean

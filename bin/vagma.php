@@ -24,6 +24,8 @@ $application->add(new Command\Vagrant\Halt\AllCommand());
 
 $application->add(new Command\Vagrant\SshCommand());
 
+$application->add(new Command\MultiCommand());
+
 $application->add(new Command\SelfupdateCommand());
 
 $application->add(new Command\HelpCommand());
