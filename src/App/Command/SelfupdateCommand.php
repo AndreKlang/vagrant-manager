@@ -18,7 +18,6 @@ class SelfupdateCommand extends Command
         $this
             ->setName('self-update')
             ->setDescription('Update vagrant-manager to latest version')
-            ->addOption('major', null, InputOption::VALUE_NONE, 'Allow major version update')
         ;
     }
 
@@ -31,8 +30,8 @@ class SelfupdateCommand extends Command
             return 1;
         }
         $currentVersion = $this->getApplication()->getVersion();
-        $allowMajor = $input->getOption('major');
-        if ($manager->update($currentVersion, $allowMajor)) {
+
+        if ($manager->update($currentVersion, true)) {
             $output->writeln('<info>Updated to latest version</info>');
         } else {
             $output->writeln('<comment>Already up-to-date</comment>');
