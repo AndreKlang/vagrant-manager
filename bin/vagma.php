@@ -3,7 +3,8 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-use App\Command;
+use Klang\App;
+use Klang\App\Command;
 
 $application = new App('Vagrant Manager', '@package_version@');
 

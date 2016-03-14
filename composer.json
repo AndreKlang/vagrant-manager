@@ -1,18 +1,22 @@
 {
-    "name": "AndreKlang/vagrant-manager",
-    "require": {
-        "symfony/console": "^2.7",
-        "herrera-io/phar-update": "1.*"
-    },
-    "authors": [
-        {
-            "name": "Andre Klang",
-            "email": "hej@andreklang.se"
-        }
-    ],
-    "autoload": {
-        "psr-0": {
-            "App": "src"
-        }
+  "name": "klang/vagrant-manager",
+  "require": {
+    "symfony/console": "^2.7",
+    "herrera-io/phar-update": "1.*"
+  },
+  "require-dev": {
+    "phpmd/phpmd": "*",
+    "squizlabs/php_codesniffer": "*",
+    "sebastian/phpcpd": "*"
+  },
+  "authors": [
+    {
+      "name": "AndreKlang"
     }
+  ],
+  "autoload": {
+    "psr-0": {
+      "Klang": "src"
+    }
+  }
 }
