@@ -80,4 +80,4 @@ I'd love to get contributions in any form!
  - [X] Refactor "the ugly part"
  - [X] Apply a real License
  - [X] Add a command for multiple actions
- - [ ] Release version 1.0.0
+ - [X] Release version 1.0.0
