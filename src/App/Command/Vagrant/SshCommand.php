@@ -34,7 +34,7 @@ class SshCommand extends VagrantCommand
         if($hostList === null){
 
             if($input->getOption("start")){
-                $output->writeln(sprintf("<bg=red>Note:</> <fg=yellow>You supplied the --start option, that only works when you supply an identifier as well</>"));
+                $vagrant->commandUp();
             }
 
             $vagrant->commandSsh();

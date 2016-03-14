@@ -14,10 +14,10 @@ use Symfony\Component\Console\Question\Question;
 class MultiCommand extends Command
 {
     private $actions = array(
-        "start" => array("action"=>"up"),
         "stop" => array("action"=>"halt"),
         "restart" => array("action"=>"restart"),
-        "suspend" => array("action"=>"suspend")
+        "suspend" => array("action"=>"suspend"),
+        "start" => array("action"=>"up")
     );
 
     protected function configure(){
