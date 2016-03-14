@@ -1,4 +1,6 @@
 # Vagrant Manager
+[![Build Status](https://travis-ci.org/AndreKlang/vagrant-manager.svg?branch=master)](https://travis-ci.org/AndreKlang/vagrant-manager)
+
 This is a small app that make your life a little bit easier if you are a heavy vagrant user with lots of different boxes that you often switch between.
 
 It has one main purpose really, make it easier to manage one, or many boxes with as few commands as possible. For instance spin up 5, 10, or even all boxes at the same time. And what about halting them? Yep, that too is really easy!
