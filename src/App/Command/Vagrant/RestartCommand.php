@@ -10,8 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RestartCommand extends VagrantCommand
 {
-    var $type = "restart";
-    var $action = "restart";
+    public $type = "restart";
+    public $action = "restart";
 
     protected function execute(InputInterface $input, OutputInterface $output){
         $vagrant = new Vagrant();

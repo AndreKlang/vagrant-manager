@@ -10,8 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpCommand extends VagrantCommand
 {
-    var $type = "up";
-    var $action = "start";
+    public $type = "up";
+    public $action = "start";
 
     /**
      * {@inheritdoc}

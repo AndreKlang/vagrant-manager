@@ -10,8 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SuspendCommand extends VagrantCommand
 {
-    var $type = "suspend";
-    var $action = "suspend";
+    public $type = "suspend";
+    public $action = "suspend";
 
     /**
      * {@inheritdoc}

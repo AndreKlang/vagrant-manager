@@ -10,8 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class HaltCommand extends VagrantCommand
 {
-    var $type = "halt";
-    var $action = "stop";
+    public $type = "halt";
+    public $action = "stop";
 
     /**
      * {@inheritdoc}

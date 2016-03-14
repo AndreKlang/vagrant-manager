@@ -6,8 +6,8 @@ use App\Service\Shell;
 
 class Response extends Shell {
 
-    var $exitCode = null;
-    var $output = array();
+    public $exitCode = null;
+    public $output = array();
 
     public function __toString(){
         return json_encode(array(

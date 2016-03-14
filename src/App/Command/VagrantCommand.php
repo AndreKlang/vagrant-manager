@@ -13,8 +13,8 @@ use Symfony\Component\Console\Question\Question;
 
 class VagrantCommand extends Command
 {
-    var $type = ""; // the name of the command, like "up"
-    var $action = ""; // the "word", like "start"
+    public $type = ""; // the name of the command, like "up"
+    public $action = ""; // the "word", like "start"
 
     protected function configure(){
         $this

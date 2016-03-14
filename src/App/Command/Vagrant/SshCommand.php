@@ -11,8 +11,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class SshCommand extends VagrantCommand
 {
-    var $type = "ssh";
-    var $action = "ssh";
+    public $type = "ssh";
+    public $action = "ssh";
 
     protected function configure(){
         parent::configure();
