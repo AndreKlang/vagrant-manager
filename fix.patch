@@ -1,0 +1,746 @@
+--- src/App/Command.php
++++ PHP_CodeSniffer
+@@ -17,6 +17,4 @@
+      */
+     protected function initialize(InputInterface $input, OutputInterface $output){
+     }
+-
+-
+-}
+\ Ingen nyrad vid filslut
++}
+--- src/App/Service/Shell/Response.php
++++ PHP_CodeSniffer
+@@ -15,5 +15,4 @@
+             "output" => $this->output
+         ), JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT);
+     }
+-
+-}
+\ Ingen nyrad vid filslut
++}
+--- src/App/Service/Vagrant.php
++++ PHP_CodeSniffer
+@@ -14,25 +14,32 @@
+     public function getAllHosts($refresh = false) {
+ 
+         # check if we have a previous result (and if we want to use it)
+-        if(($current = self::fetch("all_hosts")) !== null) return $current;
++        if(($current = self::fetch("all_hosts")) !== null) {
++            return $current;
++        }
+ 
+         $shell = new Shell();
+ 
+         # Get the status-list
+-        if($refresh) $status = $shell->cmd("vagrant global-status --prune 2>&1");
+-        else $status = $shell->cmd("vagrant global-status");
++        if($refresh) {
++            $status = $shell->cmd("vagrant global-status --prune 2>&1");
++        } else {
++            $status = $shell->cmd("vagrant global-status");
++        }
+ 
+         $hosts = array();
+-        foreach($status->output as $row){
++        foreach($status->output as $row) {
+ 
+             # replace tabs with spaces (both are used in the table)
+-            $row = str_replace("    "," ",$row);
++            $row = str_replace("    ", " ", $row);
+ 
+             # explode on spaces
+-            $parts = explode(" ",$row);
++            $parts = explode(" ", $row);
+ 
+             # on "host"-rows the ID (first column) is always 7 chars [a-z0-9]+
+-            if(strlen($parts[0]) !== 7) continue;
++            if(strlen($parts[0]) !== 7) {
++                continue;
++            }
+ 
+             # remove empty parts
+             $parts = array_filter($parts);
+@@ -51,13 +58,13 @@
+         }
+ 
+         # save it to store (for faster repeated fetching)
+-        self::store("all_hosts",$hosts);
++        self::store("all_hosts", $hosts);
+ 
+         return $hosts;
+     }
+ 
+     public function flushCache(){
+-        self::store("all_hosts",null);
++        self::store("all_hosts", null);
+     }
+ 
+     /**
+@@ -66,8 +73,11 @@
+      */
+     public function commandUp($host = null){
+         $shell = new Shell();
+-        if($host === null) $result = $shell->start("vagrant up");
+-        else $result = $shell->start("vagrant up ".$host);
++        if($host === null) {
++            $result = $shell->start("vagrant up");
++        } else {
++            $result = $shell->start("vagrant up ".$host);
++        }
+ 
+         return $result;
+     }
+@@ -78,8 +88,11 @@
+      */
+     public function commandHalt($host = null){
+         $shell = new Shell();
+-        if($host === null) $result = $shell->start("vagrant halt");
+-        else $result = $shell->start("vagrant halt ".$host);
++        if($host === null) {
++            $result = $shell->start("vagrant halt");
++        } else {
++            $result = $shell->start("vagrant halt ".$host);
++        }
+ 
+         return $result;
+     }
+@@ -90,8 +103,11 @@
+      */
+     public function commandDestroy($host = null){
+         $shell = new Shell();
+-        if($host === null) $result = $shell->start("vagrant destroy");
+-        else $result = $shell->start("vagrant destroy ".$host);
++        if($host === null) {
++            $result = $shell->start("vagrant destroy");
++        } else {
++            $result = $shell->start("vagrant destroy ".$host);
++        }
+ 
+         return $result;
+     }
+@@ -102,8 +118,11 @@
+      */
+     public function commandSuspend($host = null){
+         $shell = new Shell();
+-        if($host === null) $result = $shell->start("vagrant suspend");
+-        else $result = $shell->start("vagrant suspend ".$host);
++        if($host === null) {
++            $result = $shell->start("vagrant suspend");
++        } else {
++            $result = $shell->start("vagrant suspend ".$host);
++        }
+ 
+         return $result;
+     }
+@@ -114,8 +133,11 @@
+      */
+     public function commandSsh($host = null){
+         $shell = new Shell();
+-        if($host === null) $result = $shell->start("vagrant ssh");
+-        else $result = $shell->start("vagrant ssh ".$host);
++        if($host === null) {
++            $result = $shell->start("vagrant ssh");
++        } else {
++            $result = $shell->start("vagrant ssh ".$host);
++        }
+ 
+         return $result;
+     }
+@@ -123,23 +145,26 @@
+     public function lookupBox($id){
+ 
+         $return = null;
+-        if($id !== null){
++        if($id !== null) {
+ 
+             $allHosts = $this->getAllHosts();
+ 
+-            if(strlen($id)==7){
++            if(strlen($id)==7) {
+                 $found = false;
+-                foreach($allHosts as $host){
+-                    if($host->getData("id") == $id){
++                foreach($allHosts as $host) {
++                    if($host->getData("id") == $id) {
+                         $return = $host;
+                         $found = true;
+                         break;
+                     }
+                 }
+-                if(!$found) throw new \InvalidArgumentException("Box with that ID is not found");
+-            }
+-            elseif(is_numeric($id)){
+-                if(!isset($allHosts[$id-1])) throw new \InvalidArgumentException("Box with that ID is not found");
++                if(!$found) {
++                    throw new \InvalidArgumentException("Box with that ID is not found");
++                }
++            } elseif(is_numeric($id)) {
++                if(!isset($allHosts[$id-1])) {
++                    throw new \InvalidArgumentException("Box with that ID is not found");
++                }
+                 $return = $allHosts[$id-1];
+             } else {
+                 throw new \InvalidArgumentException("Invalid argument");
+@@ -154,55 +179,62 @@
+         $allHosts = $this->getAllHosts();
+ 
+         # if the string is a "hash"
+-        if(preg_match('/^[a-z0-9]{7}$/',$str)){
+-            foreach($allHosts as $key => $host){
+-                if($host->getData("id") == $str) return [$key+1];
++        if(preg_match('/^[a-z0-9]{7}$/', $str)) {
++            foreach($allHosts as $key => $host) {
++                if($host->getData("id") == $str) {
++                    return [$key+1];
++                }
+             }
+             throw new \InvalidArgumentException("Box with that ID is not found");
+         }
+ 
+         $matches = [];
+ 
+-        $numbers = range(1,count($allHosts)); // all possible numbers
++        $numbers = range(1, count($allHosts)); // all possible numbers
+ 
+-        $parts = explode(",",$str);
+-        foreach($parts as $part){
+-            $part = str_replace(" ","",$part);
++        $parts = explode(",", $str);
++        foreach($parts as $part) {
++            $part = str_replace(" ", "", $part);
+ 
+             # go throgh the rules
+-            if($part == "*"){
++            if($part == "*") {
+                 # if * (match all)
+                 $matches = $numbers;
+-            }
+-            elseif(substr($part,0,1)=="-"){
++            } elseif(substr($part, 0, 1)=="-") {
+                 # if it starts with a - (exclude that one)
+-                $key = array_search(substr($part,1),$matches);
+-                if(isset($matches[$key])) unset($matches[$key]);
+-            }
+-            elseif(substr($part,-1,1)=="-"){
++                $key = array_search(substr($part, 1), $matches);
++                if(isset($matches[$key])) {
++                    unset($matches[$key]);
++                }
++            } elseif(substr($part, -1, 1)=="-") {
+                 # if it ends with a - (take that one, and all after)
+-                foreach(range(substr($part,0,-1),count($allHosts)) as $match){
+-                    if(!in_array($match,$matches)) $matches[] = $match;
++                foreach(range(substr($part, 0, -1), count($allHosts)) as $match) {
++                    if(!in_array($match, $matches)) {
++                        $matches[] = $match;
++                    }
+                 }
+-            }
+-            elseif(preg_match("/([0-9]+)-([0-9]+)/",$part,$partNumbers)){
++            } elseif(preg_match("/([0-9]+)-([0-9]+)/", $part, $partNumbers)) {
+                 # if it is a range 1-4 (include them and all in between)
+-                foreach(range($partNumbers[1],$partNumbers[2]) as $match){
+-                    if(!in_array($match,$matches)) $matches[] = $match;
++                foreach(range($partNumbers[1], $partNumbers[2]) as $match) {
++                    if(!in_array($match, $matches)) {
++                        $matches[] = $match;
++                    }
++                }
++            } elseif(preg_match("/([0-9]+)/", $part, $partNumbers)) {
++                if(!in_array($partNumbers[1], $matches)) {
++                    $matches[] = $partNumbers[1];
+                 }
+-            }
+-            elseif(preg_match("/([0-9]+)/",$part,$partNumbers)){
+-                if(!in_array($partNumbers[1],$matches)) $matches[] = $partNumbers[1];
+             }
+ 
+         }
+ 
+         # sanitize the result
+-        foreach($matches as $key => $match){
+-            if(!in_array($match,$numbers)) unset($matches[$key]);
++        foreach($matches as $key => $match) {
++            if(!in_array($match, $numbers)) {
++                unset($matches[$key]);
++            }
+         }
+ 
+         return $matches;
+     }
+-
+-}
+\ Ingen nyrad vid filslut
++}
+--- src/App/Service/Vagrant/Host.php
++++ PHP_CodeSniffer
+@@ -32,12 +32,14 @@
+      * @return mixed
+      */
+     public function getData($key, $default = null){
+-        if(isset($this->_data[$key])) return $this->_data[$key];
+-        else return $default;
++        if(isset($this->_data[$key])) {
++            return $this->_data[$key];
++        } else {
++            return $default;
++        }
+     }
+ 
+     public function __toString(){
+-        return json_encode($this->_data,JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES);
++        return json_encode($this->_data, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES);
+     }
+-
+-}
+\ Ingen nyrad vid filslut
++}
+--- src/App/Service/Shell.php
++++ PHP_CodeSniffer
+@@ -17,14 +17,13 @@
+         /** @var \App\Service\Shell\Response $response */
+         $response = new Service\Shell\Response();
+ 
+-        exec($command,$response->output,$response->exitCode);
++        exec($command, $response->output, $response->exitCode);
+ 
+         return $response;
+     }
+ 
+     public function start($command){
+-        passthru($command,$return);
++        passthru($command, $return);
+         return $return;
+     }
+-
+-}
+\ Ingen nyrad vid filslut
++}
+--- src/App/Service.php
++++ PHP_CodeSniffer
+@@ -2,6 +2,5 @@
+ 
+ namespace App;
+ 
+-
+ class Service extends \App {
+-}
+\ Ingen nyrad vid filslut
++}
+--- src/App/Command/MultiCommand.php
++++ PHP_CodeSniffer
+@@ -32,13 +32,13 @@
+         # print the status list
+         /** @var StatusCommand $command */
+         $command = $this->getApplication()->find('status');
+-        $statusInput = new ArrayInput(array(),$command->getDefinition());
++        $statusInput = new ArrayInput(array(), $command->getDefinition());
+         $command->run($statusInput, $output);
+ 
+-        foreach($this->actions as $name => $action){
++        foreach($this->actions as $name => $action) {
+             # ask with boxes to handle
+             $helper = $this->getHelper('question');
+-            $question = new Question('<fg=yellow>'."Select box/boxes to ".$name.' []:</> ',null);
++            $question = new Question('<fg=yellow>'."Select box/boxes to ".$name.' []:</> ', null);
+             $question->setMaxAttempts(5);
+ 
+             # set up validation for the question
+@@ -65,18 +65,19 @@
+     protected function execute(InputInterface $input, OutputInterface $output){
+         $vagrant = new Vagrant();
+ 
+-        foreach($this->actions as $name => $action){
+-            if(!isset($action["boxes"])) continue;
++        foreach($this->actions as $name => $action) {
++            if(!isset($action["boxes"])) {
++                continue;
++            }
+ 
+             /** @var VagrantCommand $command */
+             $command = $this->getApplication()->find($action["action"]);
+             $statusInput = new ArrayInput(array(
+                 "identifier" => $action["boxes"]
+-            ),$command->getDefinition());
++            ), $command->getDefinition());
+             $command->run($statusInput, $output);
+ 
+             $vagrant->flushCache();
+         }
+     }
+-
+ }
+--- src/App/Command/Vagrant/RestartCommand.php
++++ PHP_CodeSniffer
+@@ -18,18 +18,20 @@
+ 
+         $hostList = $this->getHostList($input, $output);
+ 
+-        if($hostList === null){
++        if($hostList === null) {
+             $vagrant->commandHalt();
+             $vagrant->commandUp();
+         } else {
+             $count = count($hostList);
+ 
+             # handle all boxes that match the inputStr
+-            foreach($hostList as $host){
++            foreach($hostList as $host) {
+                 /** @var \App\Service\Vagrant\Host $host */;
+ 
+-                $output->writeln(sprintf("<fg=yellow>Restaring:</> %s <fg=blue>%s</>",
+-                    $host->getData("name"),$host->getData("dir")
++                $output->writeln(sprintf(
++                    "<fg=yellow>Restaring:</> %s <fg=blue>%s</>",
++                    $host->getData("name"),
++                    $host->getData("dir")
+                 ));
+ 
+                 $vagrant->commandHalt($host->getData("id"));
+@@ -37,9 +39,11 @@
+             }
+ 
+             # print success-message
+-            if($count){
+-                $output->writeln(sprintf("<fg=green>Done:</> Restarted <fg=blue>%s</> %s",
+-                    $count,($count > 1 ? 'boxes' : "box")
++            if($count) {
++                $output->writeln(sprintf(
++                    "<fg=green>Done:</> Restarted <fg=blue>%s</> %s",
++                    $count,
++                    ($count > 1 ? 'boxes' : "box")
+                 ));
+             }
+         }
+--- src/App/Command/Vagrant/SuspendCommand.php
++++ PHP_CodeSniffer
+@@ -27,11 +27,13 @@
+         $list = parent::getHostList($input, $output);
+         if(is_array($list)) {
+ 
+-            foreach($list as $key => $host){
++            foreach($list as $key => $host) {
+                 /** @var \App\Service\Vagrant\Host $host */
+ 
+                 # remove ignored from the list
+-                if(in_array($host->getData("state"),$ignoreStatuses)) unset($list[$key]);
++                if(in_array($host->getData("state"), $ignoreStatuses)) {
++                    unset($list[$key]);
++                }
+             }
+         }
+ 
+@@ -43,26 +45,30 @@
+ 
+         $hostList = $this->getHostList($input, $output);
+ 
+-        if($hostList === null){
++        if($hostList === null) {
+             $vagrant->commandSuspend();
+         } else {
+             $count = count($hostList);
+ 
+             # handle all boxes that match the inputStr
+-            foreach($hostList as $host){
++            foreach($hostList as $host) {
+                 /** @var \App\Service\Vagrant\Host $host */;
+ 
+-                $output->writeln(sprintf("<fg=yellow>Suspending:</> %s <fg=blue>%s</>",
+-                    $host->getData("name"),$host->getData("dir")
++                $output->writeln(sprintf(
++                    "<fg=yellow>Suspending:</> %s <fg=blue>%s</>",
++                    $host->getData("name"),
++                    $host->getData("dir")
+                 ));
+ 
+                 $vagrant->commandSuspend($host->getData("id"));
+             }
+ 
+             # print success-message
+-            if($count){
+-                $output->writeln(sprintf("<fg=green>Done:</> Suspended <fg=blue>%s</> %s",
+-                    $count,($count > 1 ? 'boxes' : "box")
++            if($count) {
++                $output->writeln(sprintf(
++                    "<fg=green>Done:</> Suspended <fg=blue>%s</> %s",
++                    $count,
++                    ($count > 1 ? 'boxes' : "box")
+                 ));
+             }
+         }
+--- src/App/Command/Vagrant/SshCommand.php
++++ PHP_CodeSniffer
+@@ -31,9 +31,9 @@
+ 
+         $hostList = $this->getHostList($input, $output);
+ 
+-        if($hostList === null){
++        if($hostList === null) {
+ 
+-            if($input->getOption("start")){
++            if($input->getOption("start")) {
+                 $vagrant->commandUp();
+             }
+ 
+@@ -42,37 +42,45 @@
+             $count = count($hostList);
+ 
+             # handle all boxes that match the inputStr
+-            foreach($hostList as $host){
++            foreach($hostList as $host) {
+                 /** @var \App\Service\Vagrant\Host $host */;
+ 
+-                if($host->getData("state") != 'running'){
++                if($host->getData("state") != 'running') {
+ 
+                     if($input->getOption("start")) {
+-                        $output->writeln(sprintf("<fg=yellow>Starting:</> %s <fg=blue>%s</>",
+-                            $host->getData("name"),$host->getData("dir")
++                        $output->writeln(sprintf(
++                            "<fg=yellow>Starting:</> %s <fg=blue>%s</>",
++                            $host->getData("name"),
++                            $host->getData("dir")
+                         ));
+                         $vagrant->commandUp($host->getData("id"));
+                     } else {
+                         $count--;
+-                        $output->writeln(sprintf("<bg=red>Box %s (%s) is not running!</>",
+-                            $host->getData("name"),$host->getData("dir")
++                        $output->writeln(sprintf(
++                            "<bg=red>Box %s (%s) is not running!</>",
++                            $host->getData("name"),
++                            $host->getData("dir")
+                         ));
+                         $output->writeln(sprintf("<fg=yellow>Use option --start to start it for you</>"));
+                         continue;
+                     }
+                 }
+ 
+-                $output->writeln(sprintf("<fg=yellow>Starting ssh-session to:</> %s <fg=blue>%s</>",
+-                    $host->getData("name"),$host->getData("dir")
++                $output->writeln(sprintf(
++                    "<fg=yellow>Starting ssh-session to:</> %s <fg=blue>%s</>",
++                    $host->getData("name"),
++                    $host->getData("dir")
+                 ));
+ 
+                 $vagrant->commandSsh($host->getData("id"));
+             }
+ 
+             # print success-message
+-            if($count){
+-                $output->writeln(sprintf("<fg=green>Done:</> ssh-session ended for <fg=blue>%s</> %s",
+-                    $count,($count > 1 ? 'boxes' : "box")
++            if($count) {
++                $output->writeln(sprintf(
++                    "<fg=green>Done:</> ssh-session ended for <fg=blue>%s</> %s",
++                    $count,
++                    ($count > 1 ? 'boxes' : "box")
+                 ));
+             }
+         }
+--- src/App/Command/Vagrant/HaltCommand.php
++++ PHP_CodeSniffer
+@@ -21,11 +21,13 @@
+         $list = parent::getHostList($input, $output);
+         if(is_array($list)) {
+ 
+-            foreach($list as $key => $host){
++            foreach($list as $key => $host) {
+                 /** @var \App\Service\Vagrant\Host $host */
+ 
+                 # remove "poweroff" from the list
+-                if($host->getData("state") == 'poweroff') unset($list[$key]);
++                if($host->getData("state") == 'poweroff') {
++                    unset($list[$key]);
++                }
+             }
+         }
+ 
+@@ -37,26 +39,30 @@
+ 
+         $hostList = $this->getHostList($input, $output);
+ 
+-        if($hostList === null){
++        if($hostList === null) {
+             $vagrant->commandHalt();
+         } else {
+             $count = count($hostList);
+ 
+             # handle all boxes that match the inputStr
+-            foreach($hostList as $host){
++            foreach($hostList as $host) {
+                 /** @var \App\Service\Vagrant\Host $host */;
+ 
+-                $output->writeln(sprintf("<fg=yellow>Halting:</> %s <fg=blue>%s</>",
+-                    $host->getData("name"),$host->getData("dir")
++                $output->writeln(sprintf(
++                    "<fg=yellow>Halting:</> %s <fg=blue>%s</>",
++                    $host->getData("name"),
++                    $host->getData("dir")
+                 ));
+ 
+                 $vagrant->commandHalt($host->getData("id"));
+             }
+ 
+             # print success-message
+-            if($count){
+-                $output->writeln(sprintf("<fg=green>Done:</> Halted <fg=blue>%s</> %s",
+-                    $count,($count > 1 ? 'boxes' : "box")
++            if($count) {
++                $output->writeln(sprintf(
++                    "<fg=green>Done:</> Halted <fg=blue>%s</> %s",
++                    $count,
++                    ($count > 1 ? 'boxes' : "box")
+                 ));
+             }
+         }
+--- src/App/Command/Vagrant/UpCommand.php
++++ PHP_CodeSniffer
+@@ -21,11 +21,13 @@
+         $list = parent::getHostList($input, $output);
+         if(is_array($list)) {
+ 
+-            foreach($list as $key => $host){
++            foreach($list as $key => $host) {
+                 /** @var \App\Service\Vagrant\Host $host */
+ 
+                 # remove "running" from the list
+-                if($host->getData("state") == 'running') unset($list[$key]);
++                if($host->getData("state") == 'running') {
++                    unset($list[$key]);
++                }
+             }
+         }
+ 
+@@ -38,26 +40,30 @@
+ 
+         $hostList = $this->getHostList($input, $output);
+ 
+-        if($hostList === null){
++        if($hostList === null) {
+             $vagrant->commandUp();
+         } else {
+             $count = count($hostList);
+ 
+             # handle all boxes that match the inputStr
+-            foreach($hostList as $host){
++            foreach($hostList as $host) {
+                 /** @var \App\Service\Vagrant\Host $host */;
+ 
+-                $output->writeln(sprintf("<fg=yellow>Bringing up:</> %s <fg=blue>%s</>",
+-                    $host->getData("name"),$host->getData("dir")
++                $output->writeln(sprintf(
++                    "<fg=yellow>Bringing up:</> %s <fg=blue>%s</>",
++                    $host->getData("name"),
++                    $host->getData("dir")
+                 ));
+ 
+                 $vagrant->commandUp($host->getData("id"));
+             }
+ 
+             # print success-message
+-            if($count){
+-                $output->writeln(sprintf("<fg=green>Done:</> Started <fg=blue>%s</> %s",
+-                    $count,($count > 1 ? 'boxes' : "box")
++            if($count) {
++                $output->writeln(sprintf(
++                    "<fg=green>Done:</> Started <fg=blue>%s</> %s",
++                    $count,
++                    ($count > 1 ? 'boxes' : "box")
+                 ));
+             }
+         }
+--- src/App/Command/VagrantCommand.php
++++ PHP_CodeSniffer
+@@ -53,16 +53,16 @@
+ 
+     protected function interact(InputInterface $input, OutputInterface $output){
+ 
+-        if($input->hasOption("browse") && $input->getOption("browse")){
++        if($input->hasOption("browse") && $input->getOption("browse")) {
+ 
+             # print the status list
+             $command = $this->getApplication()->find('status');
+-            $statusInput = new ArrayInput(array(),$command->getDefinition());
++            $statusInput = new ArrayInput(array(), $command->getDefinition());
+             $command->run($statusInput, $output);
+ 
+             # ask with boxes to handle
+             $helper = $this->getHelper('question');
+-            $question = new Question('<fg=yellow>'."Select box/boxes to ".$this->action.':</> ',null);
++            $question = new Question('<fg=yellow>'."Select box/boxes to ".$this->action.':</> ', null);
+             $question->setMaxAttempts(5);
+ 
+             # set up validation for the question
+@@ -80,7 +80,7 @@
+ 
+             # if we have an answer, set it as an argument, and move on
+             if ($answer = $helper->ask($input, $output, $question)) {
+-                $input->setArgument("identifier",$answer);
++                $input->setArgument("identifier", $answer);
+             }
+         }
+     }
+@@ -100,13 +100,13 @@
+ 
+         $inputStr = $input->getArgument("identifier");
+ 
+-        if($inputStr === null){
++        if($inputStr === null) {
+             return null;
+         } else {
+ 
+             $hosts = [];
+             # handle all boxes that match the inputStr
+-            foreach($vagrant->resolveStr($inputStr) as $id){
++            foreach($vagrant->resolveStr($inputStr) as $id) {
+ 
+                 /** @var \App\Service\Vagrant\Host $host */
+                 $host = $vagrant->lookupBox($id);
+@@ -116,5 +116,4 @@
+             return $hosts;
+         }
+     }
+-
+ }
+--- src/App/Command/StatusCommand.php
++++ PHP_CodeSniffer
+@@ -34,10 +34,10 @@
+         $vagrant = new Vagrant();
+ 
+         $rows = array();
+-        foreach($vagrant->getAllHosts($input->getOption("refresh")) as $key => $box){
++        foreach($vagrant->getAllHosts($input->getOption("refresh")) as $key => $box) {
+             /** @var \App\Service\Vagrant\Host $box */
+ 
+-            switch ($box->getData("state")){
++            switch ($box->getData("state")) {
+                 case "poweroff":
+                     $status = "<fg=red>Off</>";
+                     break;
+--- src/App.php
++++ PHP_CodeSniffer
+@@ -14,8 +14,11 @@
+     }
+ 
+     public static function fetch($key, $default = null){
+-        if(isset(self::$_registry[$key])) return self::$_registry[$key];
+-        else return $default;
++        if(isset(self::$_registry[$key])) {
++            return self::$_registry[$key];
++        } else {
++            return $default;
++        }
+     }
+ 
+     /**
+@@ -35,4 +38,4 @@
+             //new InputOption('--no-interaction', '-n', InputOption::VALUE_NONE, 'Do not ask any interactive question'),
+         ));
+     }
+-}
+\ Ingen nyrad vid filslut
++}
+

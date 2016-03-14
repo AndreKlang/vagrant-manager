@@ -27,11 +27,13 @@ class SuspendCommand extends VagrantCommand
         $list = parent::getHostList($input, $output);
         if(is_array($list)) {
 
-            foreach($list as $key => $host){
+            foreach($list as $key => $host) {
                 /** @var \App\Service\Vagrant\Host $host */
 
                 # remove ignored from the list
-                if(in_array($host->getData("state"),$ignoreStatuses)) unset($list[$key]);
+                if(in_array($host->getData("state"), $ignoreStatuses)) {
+                    unset($list[$key]);
+                }
             }
         }
 
@@ -43,26 +45,30 @@ class SuspendCommand extends VagrantCommand
 
         $hostList = $this->getHostList($input, $output);
 
-        if($hostList === null){
+        if($hostList === null) {
             $vagrant->commandSuspend();
         } else {
             $count = count($hostList);
 
             # handle all boxes that match the inputStr
-            foreach($hostList as $host){
+            foreach($hostList as $host) {
                 /** @var \App\Service\Vagrant\Host $host */;
 
-                $output->writeln(sprintf("<fg=yellow>Suspending:</> %s <fg=blue>%s</>",
-                    $host->getData("name"),$host->getData("dir")
+                $output->writeln(sprintf(
+                    "<fg=yellow>Suspending:</> %s <fg=blue>%s</>",
+                    $host->getData("name"),
+                    $host->getData("dir")
                 ));
 
                 $vagrant->commandSuspend($host->getData("id"));
             }
 
             # print success-message
-            if($count){
-                $output->writeln(sprintf("<fg=green>Done:</> Suspended <fg=blue>%s</> %s",
-                    $count,($count > 1 ? 'boxes' : "box")
+            if($count) {
+                $output->writeln(sprintf(
+                    "<fg=green>Done:</> Suspended <fg=blue>%s</> %s",
+                    $count,
+                    ($count > 1 ? 'boxes' : "box")
                 ));
             }
         }

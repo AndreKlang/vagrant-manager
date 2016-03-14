@@ -34,10 +34,10 @@ class StatusCommand extends Command
         $vagrant = new Vagrant();
 
         $rows = array();
-        foreach($vagrant->getAllHosts($input->getOption("refresh")) as $key => $box){
+        foreach($vagrant->getAllHosts($input->getOption("refresh")) as $key => $box) {
             /** @var \App\Service\Vagrant\Host $box */
 
-            switch ($box->getData("state")){
+            switch ($box->getData("state")) {
                 case "poweroff":
                     $status = "<fg=red>Off</>";
                     break;

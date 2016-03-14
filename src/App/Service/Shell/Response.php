@@ -15,5 +15,4 @@ class Response extends Shell {
             "output" => $this->output
         ), JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT);
     }
-
 }

@@ -14,8 +14,11 @@ class App extends Application {
     }
 
     public static function fetch($key, $default = null){
-        if(isset(self::$_registry[$key])) return self::$_registry[$key];
-        else return $default;
+        if(isset(self::$_registry[$key])) {
+            return self::$_registry[$key];
+        } else {
+            return $default;
+        }
     }
 
     /**

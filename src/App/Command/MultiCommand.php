@@ -32,13 +32,13 @@ class MultiCommand extends Command
         # print the status list
         /** @var StatusCommand $command */
         $command = $this->getApplication()->find('status');
-        $statusInput = new ArrayInput(array(),$command->getDefinition());
+        $statusInput = new ArrayInput(array(), $command->getDefinition());
         $command->run($statusInput, $output);
 
-        foreach($this->actions as $name => $action){
+        foreach($this->actions as $name => $action) {
             # ask with boxes to handle
             $helper = $this->getHelper('question');
-            $question = new Question('<fg=yellow>'."Select box/boxes to ".$name.' []:</> ',null);
+            $question = new Question('<fg=yellow>'."Select box/boxes to ".$name.' []:</> ', null);
             $question->setMaxAttempts(5);
 
             # set up validation for the question
@@ -65,18 +65,19 @@ class MultiCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output){
         $vagrant = new Vagrant();
 
-        foreach($this->actions as $name => $action){
-            if(!isset($action["boxes"])) continue;
+        foreach($this->actions as $name => $action) {
+            if(!isset($action["boxes"])) {
+                continue;
+            }
 
             /** @var VagrantCommand $command */
             $command = $this->getApplication()->find($action["action"]);
             $statusInput = new ArrayInput(array(
                 "identifier" => $action["boxes"]
-            ),$command->getDefinition());
+            ), $command->getDefinition());
             $command->run($statusInput, $output);
 
             $vagrant->flushCache();
         }
     }
-
 }

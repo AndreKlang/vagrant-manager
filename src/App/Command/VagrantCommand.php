@@ -53,16 +53,16 @@ Rules can also be combined, separated with a comma (,)
 
     protected function interact(InputInterface $input, OutputInterface $output){
 
-        if($input->hasOption("browse") && $input->getOption("browse")){
+        if($input->hasOption("browse") && $input->getOption("browse")) {
 
             # print the status list
             $command = $this->getApplication()->find('status');
-            $statusInput = new ArrayInput(array(),$command->getDefinition());
+            $statusInput = new ArrayInput(array(), $command->getDefinition());
             $command->run($statusInput, $output);
 
             # ask with boxes to handle
             $helper = $this->getHelper('question');
-            $question = new Question('<fg=yellow>'."Select box/boxes to ".$this->action.':</> ',null);
+            $question = new Question('<fg=yellow>'."Select box/boxes to ".$this->action.':</> ', null);
             $question->setMaxAttempts(5);
 
             # set up validation for the question
@@ -80,7 +80,7 @@ Rules can also be combined, separated with a comma (,)
 
             # if we have an answer, set it as an argument, and move on
             if ($answer = $helper->ask($input, $output, $question)) {
-                $input->setArgument("identifier",$answer);
+                $input->setArgument("identifier", $answer);
             }
         }
     }
@@ -100,13 +100,13 @@ Rules can also be combined, separated with a comma (,)
 
         $inputStr = $input->getArgument("identifier");
 
-        if($inputStr === null){
+        if($inputStr === null) {
             return null;
         } else {
 
             $hosts = [];
             # handle all boxes that match the inputStr
-            foreach($vagrant->resolveStr($inputStr) as $id){
+            foreach($vagrant->resolveStr($inputStr) as $id) {
 
                 /** @var \App\Service\Vagrant\Host $host */
                 $host = $vagrant->lookupBox($id);
@@ -116,5 +116,4 @@ Rules can also be combined, separated with a comma (,)
             return $hosts;
         }
     }
-
 }

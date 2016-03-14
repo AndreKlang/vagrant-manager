@@ -17,6 +17,4 @@ class Command extends \Symfony\Component\Console\Command\Command {
      */
     protected function initialize(InputInterface $input, OutputInterface $output){
     }
-
-
 }

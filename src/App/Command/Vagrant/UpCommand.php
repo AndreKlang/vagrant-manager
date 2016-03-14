@@ -21,11 +21,13 @@ class UpCommand extends VagrantCommand
         $list = parent::getHostList($input, $output);
         if(is_array($list)) {
 
-            foreach($list as $key => $host){
+            foreach($list as $key => $host) {
                 /** @var \App\Service\Vagrant\Host $host */
 
                 # remove "running" from the list
-                if($host->getData("state") == 'running') unset($list[$key]);
+                if($host->getData("state") == 'running') {
+                    unset($list[$key]);
+                }
             }
         }
 
@@ -38,26 +40,30 @@ class UpCommand extends VagrantCommand
 
         $hostList = $this->getHostList($input, $output);
 
-        if($hostList === null){
+        if($hostList === null) {
             $vagrant->commandUp();
         } else {
             $count = count($hostList);
 
             # handle all boxes that match the inputStr
-            foreach($hostList as $host){
+            foreach($hostList as $host) {
                 /** @var \App\Service\Vagrant\Host $host */;
 
-                $output->writeln(sprintf("<fg=yellow>Bringing up:</> %s <fg=blue>%s</>",
-                    $host->getData("name"),$host->getData("dir")
+                $output->writeln(sprintf(
+                    "<fg=yellow>Bringing up:</> %s <fg=blue>%s</>",
+                    $host->getData("name"),
+                    $host->getData("dir")
                 ));
 
                 $vagrant->commandUp($host->getData("id"));
             }
 
             # print success-message
-            if($count){
-                $output->writeln(sprintf("<fg=green>Done:</> Started <fg=blue>%s</> %s",
-                    $count,($count > 1 ? 'boxes' : "box")
+            if($count) {
+                $output->writeln(sprintf(
+                    "<fg=green>Done:</> Started <fg=blue>%s</> %s",
+                    $count,
+                    ($count > 1 ? 'boxes' : "box")
                 ));
             }
         }

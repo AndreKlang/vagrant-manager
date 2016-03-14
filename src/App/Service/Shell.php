@@ -17,14 +17,13 @@ class Shell extends Service {
         /** @var \App\Service\Shell\Response $response */
         $response = new Service\Shell\Response();
 
-        exec($command,$response->output,$response->exitCode);
+        exec($command, $response->output, $response->exitCode);
 
         return $response;
     }
 
     public function start($command){
-        passthru($command,$return);
+        passthru($command, $return);
         return $return;
     }
-
 }

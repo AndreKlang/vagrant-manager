@@ -14,25 +14,32 @@ class Vagrant extends Service {
     public function getAllHosts($refresh = false) {
 
         # check if we have a previous result (and if we want to use it)
-        if(($current = self::fetch("all_hosts")) !== null) return $current;
+        if(($current = self::fetch("all_hosts")) !== null) {
+            return $current;
+        }
 
         $shell = new Shell();
 
         # Get the status-list
-        if($refresh) $status = $shell->cmd("vagrant global-status --prune 2>&1");
-        else $status = $shell->cmd("vagrant global-status");
+        if($refresh) {
+            $status = $shell->cmd("vagrant global-status --prune 2>&1");
+        } else {
+            $status = $shell->cmd("vagrant global-status");
+        }
 
         $hosts = array();
-        foreach($status->output as $row){
+        foreach($status->output as $row) {
 
             # replace tabs with spaces (both are used in the table)
-            $row = str_replace("    "," ",$row);
+            $row = str_replace("    ", " ", $row);
 
             # explode on spaces
-            $parts = explode(" ",$row);
+            $parts = explode(" ", $row);
 
             # on "host"-rows the ID (first column) is always 7 chars [a-z0-9]+
-            if(strlen($parts[0]) !== 7) continue;
+            if(strlen($parts[0]) !== 7) {
+                continue;
+            }
 
             # remove empty parts
             $parts = array_filter($parts);
@@ -51,13 +58,13 @@ class Vagrant extends Service {
         }
 
         # save it to store (for faster repeated fetching)
-        self::store("all_hosts",$hosts);
+        self::store("all_hosts", $hosts);
 
         return $hosts;
     }
 
     public function flushCache(){
-        self::store("all_hosts",null);
+        self::store("all_hosts", null);
     }
 
     /**
@@ -66,8 +73,11 @@ class Vagrant extends Service {
      */
     public function commandUp($host = null){
         $shell = new Shell();
-        if($host === null) $result = $shell->start("vagrant up");
-        else $result = $shell->start("vagrant up ".$host);
+        if($host === null) {
+            $result = $shell->start("vagrant up");
+        } else {
+            $result = $shell->start("vagrant up ".$host);
+        }
 
         return $result;
     }
@@ -78,8 +88,11 @@ class Vagrant extends Service {
      */
     public function commandHalt($host = null){
         $shell = new Shell();
-        if($host === null) $result = $shell->start("vagrant halt");
-        else $result = $shell->start("vagrant halt ".$host);
+        if($host === null) {
+            $result = $shell->start("vagrant halt");
+        } else {
+            $result = $shell->start("vagrant halt ".$host);
+        }
 
         return $result;
     }
@@ -90,8 +103,11 @@ class Vagrant extends Service {
      */
     public function commandDestroy($host = null){
         $shell = new Shell();
-        if($host === null) $result = $shell->start("vagrant destroy");
-        else $result = $shell->start("vagrant destroy ".$host);
+        if($host === null) {
+            $result = $shell->start("vagrant destroy");
+        } else {
+            $result = $shell->start("vagrant destroy ".$host);
+        }
 
         return $result;
     }
@@ -102,8 +118,11 @@ class Vagrant extends Service {
      */
     public function commandSuspend($host = null){
         $shell = new Shell();
-        if($host === null) $result = $shell->start("vagrant suspend");
-        else $result = $shell->start("vagrant suspend ".$host);
+        if($host === null) {
+            $result = $shell->start("vagrant suspend");
+        } else {
+            $result = $shell->start("vagrant suspend ".$host);
+        }
 
         return $result;
     }
@@ -114,8 +133,11 @@ class Vagrant extends Service {
      */
     public function commandSsh($host = null){
         $shell = new Shell();
-        if($host === null) $result = $shell->start("vagrant ssh");
-        else $result = $shell->start("vagrant ssh ".$host);
+        if($host === null) {
+            $result = $shell->start("vagrant ssh");
+        } else {
+            $result = $shell->start("vagrant ssh ".$host);
+        }
 
         return $result;
     }
@@ -123,23 +145,26 @@ class Vagrant extends Service {
     public function lookupBox($id){
 
         $return = null;
-        if($id !== null){
+        if($id !== null) {
 
             $allHosts = $this->getAllHosts();
 
-            if(strlen($id)==7){
+            if(strlen($id)==7) {
                 $found = false;
-                foreach($allHosts as $host){
-                    if($host->getData("id") == $id){
+                foreach($allHosts as $host) {
+                    if($host->getData("id") == $id) {
                         $return = $host;
                         $found = true;
                         break;
                     }
                 }
-                if(!$found) throw new \InvalidArgumentException("Box with that ID is not found");
-            }
-            elseif(is_numeric($id)){
-                if(!isset($allHosts[$id-1])) throw new \InvalidArgumentException("Box with that ID is not found");
+                if(!$found) {
+                    throw new \InvalidArgumentException("Box with that ID is not found");
+                }
+            } elseif(is_numeric($id)) {
+                if(!isset($allHosts[$id-1])) {
+                    throw new \InvalidArgumentException("Box with that ID is not found");
+                }
                 $return = $allHosts[$id-1];
             } else {
                 throw new \InvalidArgumentException("Invalid argument");
@@ -154,55 +179,62 @@ class Vagrant extends Service {
         $allHosts = $this->getAllHosts();
 
         # if the string is a "hash"
-        if(preg_match('/^[a-z0-9]{7}$/',$str)){
-            foreach($allHosts as $key => $host){
-                if($host->getData("id") == $str) return [$key+1];
+        if(preg_match('/^[a-z0-9]{7}$/', $str)) {
+            foreach($allHosts as $key => $host) {
+                if($host->getData("id") == $str) {
+                    return [$key+1];
+                }
             }
             throw new \InvalidArgumentException("Box with that ID is not found");
         }
 
         $matches = [];
 
-        $numbers = range(1,count($allHosts)); // all possible numbers
+        $numbers = range(1, count($allHosts)); // all possible numbers
 
-        $parts = explode(",",$str);
-        foreach($parts as $part){
-            $part = str_replace(" ","",$part);
+        $parts = explode(",", $str);
+        foreach($parts as $part) {
+            $part = str_replace(" ", "", $part);
 
             # go throgh the rules
-            if($part == "*"){
+            if($part == "*") {
                 # if * (match all)
                 $matches = $numbers;
-            }
-            elseif(substr($part,0,1)=="-"){
+            } elseif(substr($part, 0, 1)=="-") {
                 # if it starts with a - (exclude that one)
-                $key = array_search(substr($part,1),$matches);
-                if(isset($matches[$key])) unset($matches[$key]);
-            }
-            elseif(substr($part,-1,1)=="-"){
+                $key = array_search(substr($part, 1), $matches);
+                if(isset($matches[$key])) {
+                    unset($matches[$key]);
+                }
+            } elseif(substr($part, -1, 1)=="-") {
                 # if it ends with a - (take that one, and all after)
-                foreach(range(substr($part,0,-1),count($allHosts)) as $match){
-                    if(!in_array($match,$matches)) $matches[] = $match;
+                foreach(range(substr($part, 0, -1), count($allHosts)) as $match) {
+                    if(!in_array($match, $matches)) {
+                        $matches[] = $match;
+                    }
                 }
-            }
-            elseif(preg_match("/([0-9]+)-([0-9]+)/",$part,$partNumbers)){
+            } elseif(preg_match("/([0-9]+)-([0-9]+)/", $part, $partNumbers)) {
                 # if it is a range 1-4 (include them and all in between)
-                foreach(range($partNumbers[1],$partNumbers[2]) as $match){
-                    if(!in_array($match,$matches)) $matches[] = $match;
+                foreach(range($partNumbers[1], $partNumbers[2]) as $match) {
+                    if(!in_array($match, $matches)) {
+                        $matches[] = $match;
+                    }
                 }
-            }
-            elseif(preg_match("/([0-9]+)/",$part,$partNumbers)){
-                if(!in_array($partNumbers[1],$matches)) $matches[] = $partNumbers[1];
+            } elseif(preg_match("/([0-9]+)/", $part, $partNumbers)) {
+                if(!in_array($partNumbers[1], $matches)) {
+                    $matches[] = $partNumbers[1];
+                }
             }
 
         }
 
         # sanitize the result
-        foreach($matches as $key => $match){
-            if(!in_array($match,$numbers)) unset($matches[$key]);
+        foreach($matches as $key => $match) {
+            if(!in_array($match, $numbers)) {
+                unset($matches[$key]);
+            }
         }
 
         return $matches;
     }
-
 }
