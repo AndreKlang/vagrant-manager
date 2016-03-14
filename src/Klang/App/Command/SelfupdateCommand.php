@@ -21,6 +21,12 @@ class SelfupdateCommand extends Command
         ;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     protected function execute(InputInterface $input, OutputInterface $output){
         try {
             $manifest = Manifest::loadFile(self::MANIFEST_FILE);

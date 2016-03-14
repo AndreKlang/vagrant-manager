@@ -93,6 +93,7 @@ Rules can also be combined, separated with a comma (,)
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return null|array(\Klang\App\Service\Vagrant\Host)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getHostList(InputInterface $input, OutputInterface $output){
 

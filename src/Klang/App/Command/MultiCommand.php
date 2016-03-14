@@ -27,6 +27,12 @@ class MultiCommand extends Command
         ;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \Exception
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
     protected function interact(InputInterface $input, OutputInterface $output){
 
         # print the status list
@@ -35,7 +41,7 @@ class MultiCommand extends Command
         $statusInput = new ArrayInput(array(), $command->getDefinition());
         $command->run($statusInput, $output);
 
-        foreach($this->actions as $name => $action) {
+        foreach(array_keys($this->actions) as $name) {
             # ask with boxes to handle
             $helper = $this->getHelper('question');
             $question = new Question('<fg=yellow>'."Select box/boxes to ".$name.' []:</> ', null);
@@ -62,10 +68,17 @@ class MultiCommand extends Command
 
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \Exception
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     protected function execute(InputInterface $input, OutputInterface $output){
         $vagrant = new Vagrant();
 
-        foreach($this->actions as $name => $action) {
+        foreach($this->actions as $action) {
             if(!isset($action["boxes"])) {
                 continue;
             }

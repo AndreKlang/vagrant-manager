@@ -142,17 +142,17 @@ class Vagrant extends Service {
         return $result;
     }
 
-    public function lookupBox($id){
+    public function lookupBox($identifier){
 
         $return = null;
-        if($id !== null) {
+        if($identifier !== null) {
 
             $allHosts = $this->getAllHosts();
 
-            if(strlen($id)==7) {
+            if(strlen($identifier)==7) {
                 $found = false;
                 foreach($allHosts as $host) {
-                    if($host->getData("id") == $id) {
+                    if($host->getData("id") == $identifier) {
                         $return = $host;
                         $found = true;
                         break;
@@ -161,11 +161,11 @@ class Vagrant extends Service {
                 if(!$found) {
                     throw new \InvalidArgumentException("Box with that ID is not found");
                 }
-            } elseif(is_numeric($id)) {
-                if(!isset($allHosts[$id-1])) {
+            } elseif(is_numeric($identifier)) {
+                if(!isset($allHosts[$identifier-1])) {
                     throw new \InvalidArgumentException("Box with that ID is not found");
                 }
-                $return = $allHosts[$id-1];
+                $return = $allHosts[$identifier-1];
             } else {
                 throw new \InvalidArgumentException("Invalid argument");
             }
@@ -174,6 +174,11 @@ class Vagrant extends Service {
         return $return;
     }
 
+    /**
+     * @param $str
+     * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function resolveStr($str){
 
         $allHosts = $this->getAllHosts();

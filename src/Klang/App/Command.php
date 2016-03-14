@@ -14,6 +14,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
      * Placeholder to add "pre-command"-logic
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function initialize(InputInterface $input, OutputInterface $output){
     }
